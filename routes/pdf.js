@@ -25,6 +25,7 @@ router.post('/', async function(req, res, next) {
       const buffer = Buffer.from(htmlBuffer, 'base64');
       const html = buffer.toString('utf8');
       const result = await waitGettingPDF(responseBody, html);
+      console.log('Respondiendo ', result.status, result.errorMsg);
       return res.status(200).send(result);
     } else {
         responseBody.status = 400;
@@ -47,7 +48,6 @@ function waitGettingPDF(responseBody, html) {
       // pdf.create(html, options).toFile("./test.pdf", (err, data) => {
       // pdfPromise.toFile("D:/HOME/10111.html", (err, bufferPDF) => {
       pdfPromise.toBuffer((err, bufferPDF) => {
-          console.log('END');
           if (err) {
               responseBody.status = 500;
               responseBody.error = true;
@@ -57,7 +57,6 @@ function waitGettingPDF(responseBody, html) {
               // responseBody.pdfFile = "OK";
               responseBody.pdfFile = bufferPDF.toString('base64');
           }
-          console.log('Respondiendo ', responseBody.status, responseBody.errorMsg);
           return resolve(responseBody);
       });
   });

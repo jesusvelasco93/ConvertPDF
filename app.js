@@ -1,14 +1,12 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
+const app = express();
 
 const pdfConverter = require('./routes/pdf');
 
-const app = express();
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({ extended: false }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false, limit: '50mb' }));
-app.use(cookieParser());
-
+console.log("Call http://localhost:3000");
 app.use('/', pdfConverter);
 
 // catch 404 and forward to error handler
